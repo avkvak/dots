@@ -21,5 +21,6 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // screenshot-path null
 
 cursor {
-    xcursor-theme "breeze_cursors"
+    xcursor-theme "Adwaita"
+    xcursor-size 20
 }
