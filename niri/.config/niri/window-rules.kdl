@@ -88,6 +88,12 @@ window-rule {
     default-column-width { proportion 1.0; }
 }
 
+window-rule {
+    match app-id=r#"^jetbrains-webstorm$"#
+
+    default-column-width { proportion 1.0; }
+}
+
 /-window-rule {
     match app-id=r#"^dev\.zed"#
 
