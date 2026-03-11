@@ -10,8 +10,10 @@ ffmpeg
 gst-libav
 gstreamer
 gimp
+grim
 showtime
 satty
+slurp
 
 # Communication
 telegram-desktop

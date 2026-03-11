@@ -55,6 +55,7 @@ binds {
     // but you need to manually put each argument in separate "" quotes.
     XF86MonBrightnessUp allow-when-locked=true { spawn-sh "$HOME/dev/system/dots/themes/brightness-control.sh up"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn-sh "$HOME/dev/system/dots/themes/brightness-control.sh down"; }
+    Mod+Print hotkey-overlay-title="Annotate area screenshot to clipboard" { spawn-sh "grim -g \"$(slurp)\" - | satty --filename - --copy-command wl-copy --actions-on-enter save-to-clipboard,exit --actions-on-right-click save-to-clipboard,exit"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -262,10 +263,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
+    Print hotkey-overlay-title="Area screenshot to clipboard" { spawn-sh "grim -g \"$(slurp)\" - | wl-copy"; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
-    Mod+Print { spawn-sh "satty --copy-command wl-copy -f \"$(ls -t ~/Pictures/Screenshots/*.png | head -n1)\""; }
 
 
     // Applications such as remote-desktop clients and software KVM switches may
