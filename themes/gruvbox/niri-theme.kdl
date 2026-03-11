@@ -1,0 +1,9 @@
+layout {
+    border {
+        active-color "#a89984"
+    }
+}
+
+overview {
+    backdrop-color "#282828" // see color in waybar.css in each theme (background color)
+}

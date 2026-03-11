@@ -1,0 +1,52 @@
+# Base packages - essential for the system to work
+
+# Window Manager & Wayland
+niri
+xdg-desktop-portal-gtk
+ly
+
+# Panel & Notifications
+waybar
+mako
+swayosd
+
+# Application Launcher
+
+# Terminal
+alacritty
+zsh
+starship
+
+# Core Tools
+stow
+git
+base-devel
+neovim
+unzip
+curl
+
+# Fonts
+ttf-jetbrains-mono-nerd
+ttf-liberation
+ttf-dejavu
+noto-fonts
+noto-fonts-emoji
+noto-fonts-cjk
+
+# Wayland Utilities
+wl-clipboard
+wtype
+brightnessctl
+
+# GTK & Theming
+gnome-keyring
+gnome-themes-extra
+gtk4-layer-shell
+libnotify
+
+# Graphics
+mesa
+libva-mesa-driver
+libva-utils
+fuzzel
+cliphist

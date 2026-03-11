@@ -1,0 +1,6 @@
+# AUR packages (installed via yay)
+brave-bin
+localsend-bin
+visual-studio-code-bin
+# AUR packages
+gcalcli

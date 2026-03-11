@@ -1,0 +1,49 @@
+# User applications - optional but nice to have
+
+# Browsers
+chromium
+
+# System Monitoring
+btop
+fastfetch
+
+# Media
+obs-studio
+ffmpeg
+gst-libav
+gstreamer
+gimp
+showtime
+satty
+
+# Communication
+telegram-desktop
+thunderbird
+geary
+
+# Productivity
+obsidian
+
+# Utilities
+jq
+imagemagick
+fd
+fzf
+bc
+man-db
+gum
+libqalculate
+lsof
+sushi
+
+# Hardware
+ddcutil
+wlsunset
+swayidle
+swaylock
+hyprlock
+
+# Network & Bluetooth
+impala
+wiremix
+bluetui

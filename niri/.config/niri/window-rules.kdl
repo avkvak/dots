@@ -1,0 +1,129 @@
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://yalter.github.io/niri/Configuration:-Window-Rules
+
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+
+// Open picture-in-picture player as floating by default.
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match title="^Picture-in-picture$"
+    match title="^Picture in picture$"
+    open-floating true
+
+    // Set the window size
+    default-column-width { fixed 420; }
+    default-window-height { fixed 240; }
+
+    // Set the position (e.g., bottom-right corner with 20px offset)
+    default-floating-position x=40 y=40 relative-to="bottom-left"
+}
+
+window-rule {
+
+    // is sharing your screen|window|something else
+    match title="^meet.google.com is sharing"
+    open-floating true
+
+    // Set the position (e.g., bottom-right corner with 20px offset)
+    default-floating-position x=20 y=20 relative-to="bottom-right"
+}
+
+window-rule {
+    match title="^Meet -"
+    open-floating true
+
+    // Set the window size
+    default-column-width { fixed 300; }
+    default-window-height { fixed 540; }
+
+    // Set the position (e.g., bottom-right corner with 20px offset)
+    default-floating-position x=20 y=105 relative-to="bottom-right"
+}
+
+window-rule {
+    // app id should be writen like that: r#"^org\.wezfurlong\.wezterm$"#
+    match app-id=r#"^net\.mkiol\.SpeechNote$"#
+    match title="^Speech Note$"
+    open-floating true
+
+    // Set the window size
+    default-column-width { fixed 350; }
+    default-window-height { fixed 500; }
+
+    // Set the position (e.g., bottom-right corner with 20px offset)
+    // default-floating-position x=20 y=105 relative-to="bottom-right"
+}
+
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    match app-id=r#"^org\.telegram\.desktop$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+window-rule {
+    match app-id=r#"^dev\.zed"#
+    match app-id=r#"^code-insiders"#
+    match app-id=r#"^code"#
+
+    default-column-width { proportion 1.0; }
+}
+
+/-window-rule {
+    match app-id=r#"^dev\.zed"#
+
+    open-floating true
+    default-floating-position x=20 y=20 relative-to="top-right"
+}
+
+window-rule {
+    match app-id=r#"^Alacritty$"#
+
+    // default-column-width { proportion 0.33333; }
+}
+
+// Disable rounded corners for all windows.
+window-rule {
+    geometry-corner-radius 0
+    clip-to-geometry true
+    draw-border-with-background false
+}
+
+window-rule {
+    match is-active=false
+    opacity 0.95
+}
+
+window-rule {
+    match is-active=true
+    opacity 0.99
+}
+
+window-rule {
+    match app-id=r#"^org\.float"#
+    open-floating true
+
+    default-floating-position x=40 y=8 relative-to="top-right"
+    default-column-width { fixed 800; }
+    default-window-height { fixed 800; }
+}
+
+window-rule {
+    match app-id=r#"^brave-"#
+    match app-id=r#"^chromium"#
+
+    scroll-factor 0.3
+}

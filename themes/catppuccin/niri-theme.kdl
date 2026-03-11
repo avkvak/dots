@@ -1,0 +1,9 @@
+layout {
+    border {
+        active-color "#c6d0f5"
+    }
+}
+
+overview {
+    backdrop-color "#181824"
+}

@@ -1,0 +1,140 @@
+#!/bin/bash
+
+theme_name="$1"
+script_dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+builtin_themes_dir="$script_dir"
+builtin_templates_dir="$script_dir/themed"
+user_themes_dir="$HOME/.config/omarchy/themes"
+user_templates_dir="$HOME/.config/omarchy/themed"
+current_dir="$HOME/.config/omarchy/current"
+current_theme_path="$current_dir/theme"
+next_theme_path="$current_dir/next-theme"
+theme_name_path="$current_dir/theme.name"
+
+hex_to_rgb() {
+    local hex="${1#\#}"
+    printf "%d,%d,%d" "0x${hex:0:2}" "0x${hex:2:2}" "0x${hex:4:2}"
+}
+
+copy_theme_contents() {
+    local source_path="$1"
+
+    [[ -d "$source_path" ]] || return 0
+    cp -r "$source_path"/. "$next_theme_path"/ 2>/dev/null
+}
+
+render_templates() {
+    local colors_file="$next_theme_path/colors.toml"
+    local sed_script
+
+    [[ -f "$colors_file" ]] || return 0
+
+    sed_script=$(mktemp)
+
+    while IFS='=' read -r key value; do
+        key="${key//[\"\' ]/}"
+        [[ -n "$key" ]] || continue
+        [[ "$key" == \#* ]] && continue
+
+        value="${value#*[\"\']}"
+        value="${value%%[\"\']*}"
+
+        printf 's|{{ %s }}|%s|g\n' "$key" "$value"
+        printf 's|{{ %s_strip }}|%s|g\n' "$key" "${value#\#}"
+
+        if [[ "$value" == \#* ]]; then
+            printf 's|{{ %s_rgb }}|%s|g\n' "$key" "$(hex_to_rgb "$value")"
+        fi
+    done < "$colors_file" > "$sed_script"
+
+    shopt -s nullglob
+    for template_path in "$user_templates_dir"/*.tpl "$builtin_templates_dir"/*.tpl; do
+        output_path="$next_theme_path/$(basename "$template_path" .tpl)"
+
+        if [[ ! -f "$output_path" ]]; then
+            sed -f "$sed_script" "$template_path" > "$output_path"
+        fi
+    done
+    shopt -u nullglob
+
+    rm -f "$sed_script"
+}
+
+if [[ -z "$theme_name" ]]; then
+    echo "Usage: set-theme <theme-name>"
+    exit 1
+fi
+
+if [[ "$theme_name" == "themed" ]]; then
+    echo "Theme '$theme_name' does not exist"
+    exit 1
+fi
+
+builtin_theme_path="$builtin_themes_dir/$theme_name"
+user_theme_path="$user_themes_dir/$theme_name"
+
+if [[ ! -d "$builtin_theme_path" ]] && [[ ! -d "$user_theme_path" ]]; then
+    echo "Theme '$theme_name' does not exist"
+    exit 1
+fi
+
+mkdir -p "$current_dir"
+
+rm -rf "$next_theme_path"
+mkdir -p "$next_theme_path"
+
+copy_theme_contents "$builtin_theme_path"
+copy_theme_contents "$user_theme_path"
+render_templates
+
+rm -rf "$current_theme_path"
+mv "$next_theme_path" "$current_theme_path"
+printf '%s\n' "$theme_name" > "$theme_name_path"
+
+"$script_dir/set-next-bg.sh"
+
+pi_theme=""
+
+if [[ -f "$current_theme_path/light.mode" ]]; then
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+    pi_theme="light"
+else
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    pi_theme="dark"
+fi
+
+gnome_icons_theme="$current_theme_path/icons.theme"
+if [[ -f "$gnome_icons_theme" ]]; then
+    gsettings set org.gnome.desktop.interface icon-theme "$(<"$gnome_icons_theme")"
+fi
+
+# Toggle pi theme to match system theme
+pi_settings="$HOME/.pi/agent/settings.json"
+if [[ -n "$pi_theme" ]] && [[ -f "$pi_settings" ]] && command -v jq &>/dev/null; then
+    if jq --arg theme "$pi_theme" '.theme = $theme' "$pi_settings" > "$pi_settings.tmp" 2>/dev/null && mv "$pi_settings.tmp" "$pi_settings"; then
+        echo "[set-theme] pi theme set to '$pi_theme' (run '/reload' or restart pi to apply)"
+    else
+        echo "[set-theme] failed to set pi theme to '$pi_theme'"
+    fi
+else
+    echo "[set-theme] pi theme not changed: settings file or jq not found"
+fi
+
+# Restart affected applications
+killall -SIGUSR2 waybar 2>/dev/null || true
+
+# Alacritty doesn't have reload signal, touch config to notify
+touch ~/.config/alacritty/alacritty.toml
+touch ~/.config/btop/btop.conf
+touch ~/.config/btop/themes/current.theme
+
+# Restart btop if running
+pkill -SIGUSR2 btop 2>/dev/null || true
+
+pkill swayosd-server 2>/dev/null || true
+swayosd-server &
+makoctl reload
+
+"$script_dir/set-browser-theme.sh"

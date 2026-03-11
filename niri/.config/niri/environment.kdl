@@ -1,0 +1,12 @@
+// Environment variables configuration
+environment {
+    ZED_WINDOW_DECORATIONS "server"
+
+    // Улучшает рендеринг в Java-приложениях (например, JetBrains IDE)
+    _JAVA_OPTIONS "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
+
+    // Оптимальный движок FreeType
+    FREETYPE_PROPERTIES "truetype:interpreter-version=40"
+
+    QT_QPA_PLATFORMTHEME "gtk3"
+}

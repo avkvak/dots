@@ -1,0 +1,6 @@
+// Layer rules configuration
+layer-rule {
+    match namespace="^dms:notification-popup$"
+
+    block-out-from "screen-capture"
+}

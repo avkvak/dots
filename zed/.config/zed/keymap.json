@@ -1,0 +1,47 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-alt-b": [
+        "action::Sequence",
+        [
+          "workspace::ToggleRightDock",
+          ["task::Spawn", { "task_name": "Toggle Niri Fullscreen" }],
+        ],
+      ],
+      "ctrl-k a o": ["task::Spawn", { "task_name": "OpenCode Local" }],
+      "ctrl-k a p": ["task::Spawn", { "task_name": "pi" }],
+      "ctrl-k a g": ["task::Spawn", { "task_name": "Gemini CLI" }],
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    },
+  },
+  {
+    "bindings": {
+      "ctrl-k r": "workspace::CopyRelativePath",
+    },
+  },
+  {
+    "context": "(Editor && edit_prediction_conflict)",
+    "bindings": {
+      "alt-1": "editor::AcceptEditPrediction",
+    },
+  },
+  {
+    "context": "(Editor && edit_prediction)",
+    "bindings": {
+      "alt-1": "editor::AcceptEditPrediction",
+    },
+  },
+]
