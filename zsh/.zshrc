@@ -121,19 +121,9 @@ export NVM_DIR="$HOME/.nvm"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export OPENCODE_ENABLE_EXA=1
-export OPENCODE_EXPERIMENTAL_PLAN_MODE=1
-export OPENCODE_EXPERIMENTAL_MARKDOWN=1
-export OPENCODE_DISABLE_CHANNEL_DB=1
-
-export GEMINI_FORCE_FILE_STORAGE=true
-
 alias clauded="claude --allow-dangerously-skip-permissions"
 export DOTS_DIR="${DOTS_DIR:-$HOME/dev/system/dots}"
 alias zdots="zed $DOTS_DIR"
-
-# opencode
-export PATH="$HOME/.opencode/bin:$PATH"
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
 

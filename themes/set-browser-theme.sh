@@ -1,9 +1,8 @@
 #!/bin/bash
 
 current_theme_path="$HOME/.config/omarchy/current/theme"
-chromium_theme="$current_theme_path/chromium.theme"
-chromium_policy_dir="${CHROMIUM_POLICY_DIR:-/etc/chromium/policies/managed}"
-brave_policy_dir="${BRAVE_POLICY_DIR:-/etc/brave/policies/managed}"
+chrome_theme="$current_theme_path/chrome.theme"
+chrome_policy_dir="${CHROME_POLICY_DIR:-/etc/opt/chrome/policies/managed}"
 
 apply_browser_theme() {
     local browser_cmd="$1"
@@ -26,13 +25,12 @@ apply_browser_theme() {
     "$browser_cmd" --refresh-platform-policy --no-startup-window >/dev/null 2>&1 || true
 }
 
-if [[ -f "$chromium_theme" ]]; then
-    theme_rgb_color=$(<"$chromium_theme")
+if [[ -f "$chrome_theme" ]]; then
+    theme_rgb_color=$(<"$chrome_theme")
     theme_hex_color=$(printf '#%02x%02x%02x' ${theme_rgb_color//,/ })
 else
     theme_rgb_color="28,32,39"
     theme_hex_color="#1c2027"
 fi
 
-apply_browser_theme chromium "$chromium_policy_dir"
-apply_browser_theme brave "$brave_policy_dir"
+apply_browser_theme google-chrome-stable "$chrome_policy_dir"

@@ -1,8 +1,5 @@
 # User applications - optional but nice to have
 
-# Browsers
-chromium
-
 # System Monitoring
 btop
 fastfetch

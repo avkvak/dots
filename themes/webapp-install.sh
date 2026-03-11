@@ -41,7 +41,7 @@ fi
 if [[ -n $CUSTOM_EXEC ]]; then
   EXEC_COMMAND="$CUSTOM_EXEC"
 else
-  EXEC_COMMAND="brave --app=$APP_URL"
+  EXEC_COMMAND="google-chrome-stable --app=$APP_URL"
 fi
 
 # Create application .desktop file

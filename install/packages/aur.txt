@@ -1,5 +1,5 @@
 # AUR packages (installed via yay)
-brave-bin
+google-chrome
 localsend-bin
 visual-studio-code-bin
 # AUR packages

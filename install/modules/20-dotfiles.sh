@@ -72,12 +72,9 @@ if [[ ! -L "$HOME/.local/share/omarchy/themes" ]]; then
     ln -snf "$DOTS_DIR/themes" "$HOME/.local/share/omarchy/themes"
 fi
 
-# Add managed policy directories for Chromium and Brave theme changes
-sudo mkdir -p /etc/chromium/policies/managed
-sudo chmod a+rw /etc/chromium/policies/managed
-
-sudo mkdir -p /etc/brave/policies/managed
-sudo chmod a+rw /etc/brave/policies/managed
+# Add managed policy directory for Google Chrome theme changes
+sudo mkdir -p /etc/opt/chrome/policies/managed
+sudo chmod a+rw /etc/opt/chrome/policies/managed
 
 # Track current theme name for the generated theme workflow
 if [[ -f "$HOME/.config/omarchy/current/theme.name" ]]; then
