@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # Configuration
-REPO_URL="${DOTS_REPO_URL:-git@github.com:avkvak/dots.git}"
+REPO_URL="https://github.com/avkvak/dots.git"  # Update with your repo
 DOTS_DIR="$HOME/dev/system/dots"
 
 # Colors
@@ -30,11 +30,6 @@ fi
 # Check not root
 if [[ $EUID -eq 0 ]]; then
     echo -e "${RED}Error: Do not run as root${NC}"
-    exit 1
-fi
-
-if [[ -z "$REPO_URL" ]]; then
-    echo -e "${RED}Error: set DOTS_REPO_URL to your dots repository URL${NC}"
     exit 1
 fi
 
