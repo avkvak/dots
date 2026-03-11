@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=WebStorm
+Comment=JavaScript IDE and HTML editor
+Exec=%h/.local/bin/webstorm %f
+Icon=webstorm
+Terminal=false
+StartupNotify=true
+StartupWMClass=jetbrains-webstorm
+Categories=Development;IDE;

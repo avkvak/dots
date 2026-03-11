@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export WEBIDE_PROPERTIES="${WEBIDE_PROPERTIES:-$HOME/.config/webstorm/idea.properties}"
+export WEBIDE_VM_OPTIONS="${WEBIDE_VM_OPTIONS:-$HOME/.config/webstorm/webstorm64.vmoptions}"
+
+exec /usr/bin/webstorm "$@"

@@ -2,5 +2,6 @@
 google-chrome
 localsend-bin
 visual-studio-code-bin
+webstorm
 # AUR packages
 gcalcli

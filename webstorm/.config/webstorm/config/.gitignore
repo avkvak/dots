@@ -1,0 +1,11 @@
+.lock
+*.db
+*.key
+bundled_plugins.txt
+disabled_plugins.txt
+early-access-registry.txt
+splash-subscription-mode.txt
+event-log-metadata/
+tasks/
+options/AIOnboardingPromoWindowAdvisor.xml
+options/trace_license_storage.xml

@@ -39,6 +39,7 @@ STOW_PACKAGES=(
     nvim
     swayosd
     waybar
+    webstorm
     zed
     zsh
 )
