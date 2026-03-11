@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # Configuration
-REPO_URL="${DOTS_REPO_URL:-https://github.com/avkvak/dots.git}"
+REPO_URL="${DOTS_REPO_URL:-git@github.com:avkvak/dots.git}"
 DOTS_DIR="$HOME/dev/system/dots"
 
 # Colors
