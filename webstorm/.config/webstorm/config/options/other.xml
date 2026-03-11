@@ -10,7 +10,7 @@
     "AIHubNotificationManager.lastTopUpQuotaAvailable": "0",
     "AIHubNotificationManager.lastUsedLicenseType": "PRO_TRIAL",
     "GeneralSettings.initiallyConfigured": "true",
-    "LAST_CALCULATED_COLOR_INDEX_KEY": "3",
+    "LAST_CALCULATED_COLOR_INDEX_KEY": "4",
     "RunOnceActivity.MCP settings loaded": "true",
     "RunOnceActivity.TerminalOptionsProvider.migration.2025.1.1": "true",
     "RunOnceActivity.VFSInitializationConditionsToFusReporter": "true",
@@ -35,6 +35,7 @@
     "llm.installer.last.toolwindow.state": "AI_ASSISTANT",
     "migrated.non.roamable.values.from.general.settings": "true",
     "previousColorScheme": "_@user_Darcula",
+    "promo.ignore.suggested.ide": "true",
     "registry.to.advanced.settings.migration.build": "WS-253.31033.133",
     "terminal.gen.one.option.visible": "false",
     "ts.lib.d.ts.version": "5.9.3"
