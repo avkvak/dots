@@ -82,6 +82,12 @@ window-rule {
     default-column-width { proportion 1.0; }
 }
 
+window-rule {
+    match app-id=r#"^google-chrome$"#
+
+    default-column-width { proportion 1.0; }
+}
+
 /-window-rule {
     match app-id=r#"^dev\.zed"#
 
@@ -119,11 +125,4 @@ window-rule {
     default-floating-position x=40 y=8 relative-to="top-right"
     default-column-width { fixed 800; }
     default-window-height { fixed 800; }
-}
-
-window-rule {
-    match app-id=r#"^brave-"#
-    match app-id=r#"^chromium"#
-
-    scroll-factor 0.3
 }
