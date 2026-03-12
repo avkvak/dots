@@ -8,7 +8,7 @@ This wraps the manual process from `nadimkobeissi/16iax10h-linux-sound-saga` int
 Script path:
 
 ```bash
-~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh
+~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh
 ```
 
 ## Interactive bootstrap
@@ -16,7 +16,7 @@ Script path:
 Run without arguments:
 
 ```bash
-bash ~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh
+bash ~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh
 ```
 
 It will ask:
@@ -33,13 +33,13 @@ Patch and build the custom audio kernel now? [y/N]:
 Pre-reboot phase:
 
 ```bash
-bash ~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh --prepare
+bash ~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh --prepare
 ```
 
 After rebooting into the patched kernel:
 
 ```bash
-bash ~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh --postboot
+bash ~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh --postboot
 ```
 
 ## What the script does
@@ -102,11 +102,11 @@ aplay ~/mic-test.wav
 - Default mic capture is `80%`. Override it for one run like this:
 
 ```bash
-CAPTURE_LEVEL=70% bash ~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh --postboot
+CAPTURE_LEVEL=70% bash ~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh --postboot
 ```
 
 - Override DSP driver similarly if needed:
 
 ```bash
-DSP_DRIVER=1 bash ~/dev/system/dots/install/legion-audio-fix/legion-audio-fix.sh --prepare
+DSP_DRIVER=1 bash ~/.local/src/dots/install/legion-audio-fix/legion-audio-fix.sh --prepare
 ```

@@ -6,7 +6,10 @@ set -euo pipefail
 
 # Configuration
 REPO_URL="https://github.com/avkvak/dots.git"  # Update with your repo
-DOTS_DIR="$HOME/dev/system/dots"
+DEFAULT_DOTS_DIR="$HOME/.local/src/dots"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+DOTS_DIR="${DOTS_DIR:-$DEFAULT_DOTS_DIR}"
 
 # Colors
 RED='\033[0;31m'
@@ -39,11 +42,14 @@ if ! command -v git &>/dev/null; then
     sudo pacman -Sy --noconfirm git
 fi
 
-# Clone or update dotfiles
-if [[ -d "$DOTS_DIR" ]]; then
+# Run from the current checkout if this script already lives inside the repo.
+if [[ -f "$SCRIPT_REPO_DIR/install/setup.sh" ]] && [[ -d "$SCRIPT_REPO_DIR/.git" ]]; then
+    DOTS_DIR="$SCRIPT_REPO_DIR"
+    echo -e "  → Using existing checkout at $DOTS_DIR"
+elif [[ -d "$DOTS_DIR/.git" ]]; then
     echo -e "  → Updating dotfiles..."
     cd "$DOTS_DIR"
-    git pull
+    git pull --ff-only
 else
     echo -e "  → Cloning dotfiles..."
     mkdir -p "$(dirname "$DOTS_DIR")"
