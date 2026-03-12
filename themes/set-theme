@@ -10,6 +10,7 @@ current_dir="$HOME/.config/omarchy/current"
 current_theme_path="$current_dir/theme"
 next_theme_path="$current_dir/next-theme"
 theme_name_path="$current_dir/theme.name"
+schedule_file="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/theme-schedule.conf"
 
 hex_to_rgb() {
     local hex="${1#\#}"
@@ -34,6 +35,54 @@ normalize_hex_color() {
 
 can_use_gsettings() {
     command -v gsettings >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]
+}
+
+update_schedule_theme() {
+    local slot_name="$1"
+    local slot_value="$2"
+    local schedule_dir
+    local temp_file
+    local default_light="catppuccin-latte"
+    local default_dark="kanagawa"
+
+    schedule_dir="$(dirname "$schedule_file")"
+    mkdir -p "$schedule_dir"
+
+    if [[ ! -f "$schedule_file" ]]; then
+        if [[ "$slot_name" == "light_theme" ]]; then
+            default_light="$slot_value"
+        else
+            default_dark="$slot_value"
+        fi
+
+        cat > "$schedule_file" <<EOF
+# Auto theme schedule for omarchy.
+# Format: HH:MM in 24-hour time.
+
+light_theme=$default_light
+dark_theme=$default_dark
+light_start=08:00
+dark_start=19:00
+EOF
+        return 0
+    fi
+
+    temp_file=$(mktemp)
+    awk -v slot_name="$slot_name" -v slot_value="$slot_value" '
+        BEGIN { updated = 0 }
+        index($0, slot_name "=") == 1 {
+            print slot_name "=" slot_value
+            updated = 1
+            next
+        }
+        { print }
+        END {
+            if (!updated) {
+                print slot_name "=" slot_value
+            }
+        }
+    ' "$schedule_file" > "$temp_file"
+    mv "$temp_file" "$schedule_file"
 }
 
 copy_theme_contents() {
@@ -189,6 +238,10 @@ printf '%s\n' "$theme_name" > "$theme_name_path"
 pi_theme=""
 
 if [[ -f "$current_theme_path/light.mode" ]]; then
+    if [[ "${OMARCHY_THEME_SOURCE:-manual}" != "auto" ]]; then
+        update_schedule_theme "light_theme" "$theme_name"
+    fi
+
     if can_use_gsettings; then
         gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
         gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
@@ -198,6 +251,10 @@ if [[ -f "$current_theme_path/light.mode" ]]; then
 
     pi_theme="light"
 else
+    if [[ "${OMARCHY_THEME_SOURCE:-manual}" != "auto" ]]; then
+        update_schedule_theme "dark_theme" "$theme_name"
+    fi
+
     if can_use_gsettings; then
         gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
         gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"

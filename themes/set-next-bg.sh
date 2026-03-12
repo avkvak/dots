@@ -10,12 +10,7 @@ TOTAL=${#BACKGROUNDS[@]}
 
 if [[ $TOTAL -eq 0 ]]; then
   notify-send "No background was found for theme" -t 2000
-  pkill -x swaybg
-  if command -v uwsm-app >/dev/null 2>&1; then
-    setsid uwsm-app -- swaybg --color '#000000' >/dev/null 2>&1 &
-  else
-    setsid swaybg --color '#000000' >/dev/null 2>&1 &
-  fi
+  rm -f "$CURRENT_BACKGROUND_LINK"
 else
   # Get current background from symlink
   if [[ -L "$CURRENT_BACKGROUND_LINK" ]]; then
@@ -45,8 +40,15 @@ else
 
   # Set new background symlink
   ln -nsf "$NEW_BACKGROUND" "$CURRENT_BACKGROUND_LINK"
+fi
 
-  # Relaunch swaybg
-  pkill -x swaybg
-  swaybg -i "$CURRENT_BACKGROUND_LINK" -m fill >/dev/null 2>&1 &
+if systemctl --user restart omarchy-wallpaper.service >/dev/null 2>&1; then
+  exit 0
+fi
+
+pkill -x swaybg || true
+if command -v uwsm-app >/dev/null 2>&1; then
+  setsid uwsm-app -- "$HOME/.local/share/omarchy/themes/run-wallpaper.sh" >/dev/null 2>&1 &
+else
+  setsid "$HOME/.local/share/omarchy/themes/run-wallpaper.sh" >/dev/null 2>&1 &
 fi

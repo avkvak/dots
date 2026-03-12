@@ -1,0 +1,13 @@
+[Unit]
+Description=Run omarchy wallpaper
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/share/omarchy/themes/run-wallpaper.sh
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=default.target

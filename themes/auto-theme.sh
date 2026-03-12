@@ -188,7 +188,7 @@ main() {
         fi
     fi
 
-    exec "$script_dir/set-theme" "$target_theme"
+    exec env OMARCHY_THEME_SOURCE=auto "$script_dir/set-theme" "$target_theme"
 }
 
 main "$@"

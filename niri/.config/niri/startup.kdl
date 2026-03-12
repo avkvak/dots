@@ -3,7 +3,7 @@
 spawn-at-startup "waybar"
 spawn-at-startup "swaync"
 spawn-at-startup "swayosd-server"
-spawn-sh-at-startup "exec swaybg -i \"$HOME/.config/omarchy/current/background\" -m fill"
+spawn-sh-at-startup "systemctl --user start omarchy-wallpaper.service"
 spawn-sh-at-startup "exec \"$HOME/.config/niri/idle.sh\""
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "wlsunset" "-l" "41.6" "-L" "41.6" "-d" "1800" "-t" "5000"

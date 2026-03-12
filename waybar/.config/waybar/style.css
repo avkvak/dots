@@ -70,6 +70,27 @@
 
 tooltip {
     padding: 2px;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+tooltip,
+tooltip *,
+tooltip label,
+tooltip box,
+tooltip box *,
+window#waybar tooltip,
+window#waybar tooltip *,
+window#waybar tooltip label,
+window#waybar tooltip box,
+window#waybar tooltip box * {
+    font: 12px "JetBrainsMono Nerd Font";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+    box-shadow: none;
 }
 
 #custom-update {

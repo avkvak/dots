@@ -27,8 +27,10 @@ done
 
 if systemctl --user list-unit-files >/dev/null 2>&1; then
     systemctl --user daemon-reload
+    systemctl --user enable --now omarchy-wallpaper.service
+    log_ok "omarchy-wallpaper.service enabled"
     systemctl --user enable --now omarchy-auto-theme.timer
     log_ok "omarchy-auto-theme.timer enabled"
 else
-    log_warn "systemctl --user is unavailable; omarchy-auto-theme.timer was not enabled"
+    log_warn "systemctl --user is unavailable; user theme services were not enabled"
 fi
