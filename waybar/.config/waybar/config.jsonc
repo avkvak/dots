@@ -35,6 +35,7 @@
     "max-length": 40,
     // Click actions
     "on-click": "playerctl play-pause",
+    "on-click-middle": "~/.config/waybar/scripts/focus-active-media.sh",
     "on-scroll-up": "playerctl next",
     "on-scroll-down": "playerctl previous",
   },
