@@ -33,7 +33,6 @@ STOW_PACKAGES=(
     fontconfig
     fuzzel
     hypr
-    mango
     niri
     nvim
     swaync
@@ -54,7 +53,10 @@ fi
 cd "$DOTS_DIR"
 for pkg in "${STOW_PACKAGES[@]}"; do
     if [[ -d "$DOTS_DIR/$pkg" ]]; then
-        stow --restow --target="$HOME" "$pkg" 2>/dev/null || true
+        if ! stow --restow --target="$HOME" "$pkg"; then
+            log_err "Failed to stow package: $pkg"
+            exit 1
+        fi
         log_ok "Stowed $pkg"
     else
         log_warn "Package not found: $pkg"

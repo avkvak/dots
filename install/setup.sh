@@ -20,6 +20,21 @@ MODULES=(
     "60-finalize.sh"
 )
 
+on_error() {
+    local exit_code="$1"
+    local failed_module="${CURRENT_MODULE:-unknown}"
+
+    if [[ -n "$failed_module" ]]; then
+        record_module_result "$failed_module" "failed"
+        log_err "Setup failed in module: $failed_module"
+    else
+        log_err "Setup failed"
+    fi
+
+    show_module_summary
+    exit "$exit_code"
+}
+
 show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
@@ -53,6 +68,8 @@ run_all() {
     for module in "${MODULES[@]}"; do
         run_module "$module"
     done
+
+    show_module_summary
 }
 
 run_single() {
@@ -62,6 +79,7 @@ run_single() {
         if [[ "$module" == "$target"* ]]; then
             show_banner
             run_module "$module"
+            show_module_summary
             return 0
         fi
     done
@@ -90,10 +108,13 @@ run_from() {
         log_err "Module not found: $start"
         exit 1
     fi
+
+    show_module_summary
 }
 
 main() {
     cd "$SCRIPT_DIR"
+    trap 'on_error $?' ERR
 
     if [[ $# -eq 0 ]]; then
         run_all

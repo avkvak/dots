@@ -16,6 +16,26 @@ hex_to_rgb() {
     printf "%d,%d,%d" "0x${hex:0:2}" "0x${hex:2:2}" "0x${hex:4:2}"
 }
 
+normalize_hex_color() {
+    local value="${1//[\"\' ]/}"
+
+    case "$value" in
+        \#*)
+            printf '%s\n' "${value,,}"
+            ;;
+        0x*|0X*)
+            printf '#%s\n' "${value:2}" | tr '[:upper:]' '[:lower:]'
+            ;;
+        *)
+            printf '%s\n' "$value"
+            ;;
+    esac
+}
+
+can_use_gsettings() {
+    command -v gsettings >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]
+}
+
 copy_theme_contents() {
     local source_path="$1"
 
@@ -23,11 +43,83 @@ copy_theme_contents() {
     cp -r "$source_path"/. "$next_theme_path"/ 2>/dev/null
 }
 
+build_colors_file_from_alacritty() {
+    local alacritty_file="$1"
+    local output_file="$2"
+    local section=""
+    local line
+    local key
+    local value
+    local normalized
+    local map_key
+
+    declare -A palette=()
+
+    [[ -f "$alacritty_file" ]] || return 1
+
+    while IFS= read -r line; do
+        line="${line%"${line##*[![:space:]]}"}"
+        line="${line#"${line%%[![:space:]]*}"}"
+        [[ -n "$line" ]] || continue
+        [[ "$line" == \#* ]] && continue
+
+        if [[ "$line" =~ ^\[(.+)\]$ ]]; then
+            section="${BASH_REMATCH[1]}"
+            continue
+        fi
+
+        if [[ "$line" =~ ^([A-Za-z0-9_]+)[[:space:]]*=[[:space:]]*(.+)$ ]]; then
+            key="${BASH_REMATCH[1]}"
+            value="${BASH_REMATCH[2]}"
+            normalized="$(normalize_hex_color "$value")"
+
+            if [[ "$normalized" == \#* ]]; then
+                map_key="${section}.${key}"
+                palette["$map_key"]="$normalized"
+            fi
+        fi
+    done < "$alacritty_file"
+
+    local background="${palette[colors.primary.background]:-}"
+    local foreground="${palette[colors.primary.foreground]:-}"
+    local cursor="${palette[colors.cursor.cursor]:-${palette[colors.vi_mode_cursor.cursor]:-}}"
+    local selection_background="${palette[colors.selection.background]:-${palette[colors.search.matches.background]:-}}"
+    local selection_foreground="${palette[colors.selection.text]:-${foreground}}"
+    local accent="${palette[colors.footer_bar.background]:-${cursor:-${palette[colors.normal.blue]:-${palette[colors.bright.blue]:-${selection_background:-}}}}}"
+
+    [[ -n "$background" ]] || return 1
+    [[ -n "$foreground" ]] || return 1
+    [[ -n "$selection_background" ]] || selection_background="$background"
+    [[ -n "$selection_foreground" ]] || selection_foreground="$foreground"
+    [[ -n "$accent" ]] || accent="$selection_background"
+    [[ -n "$cursor" ]] || cursor="$accent"
+
+    cat > "$output_file" <<EOF
+accent = "$accent"
+cursor = "$cursor"
+foreground = "$foreground"
+background = "$background"
+selection_foreground = "$selection_foreground"
+selection_background = "$selection_background"
+EOF
+}
+
 render_templates() {
     local colors_file="$next_theme_path/colors.toml"
+    local temp_colors_file=""
+    local alacritty_file="$next_theme_path/alacritty.toml"
     local sed_script
 
-    [[ -f "$colors_file" ]] || return 0
+    if [[ ! -f "$colors_file" ]]; then
+        temp_colors_file=$(mktemp)
+
+        if build_colors_file_from_alacritty "$alacritty_file" "$temp_colors_file"; then
+            colors_file="$temp_colors_file"
+        else
+            rm -f "$temp_colors_file"
+            return 0
+        fi
+    fi
 
     sed_script=$(mktemp)
 
@@ -58,6 +150,7 @@ render_templates() {
     shopt -u nullglob
 
     rm -f "$sed_script"
+    rm -f "$temp_colors_file"
 }
 
 if [[ -z "$theme_name" ]]; then
@@ -96,18 +189,30 @@ printf '%s\n' "$theme_name" > "$theme_name_path"
 pi_theme=""
 
 if [[ -f "$current_theme_path/light.mode" ]]; then
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+    if can_use_gsettings; then
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+    else
+        echo "[set-theme] skipping gsettings theme update: no session bus"
+    fi
+
     pi_theme="light"
 else
-    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    if can_use_gsettings; then
+        gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    else
+        echo "[set-theme] skipping gsettings theme update: no session bus"
+    fi
+
     pi_theme="dark"
 fi
 
 gnome_icons_theme="$current_theme_path/icons.theme"
-if [[ -f "$gnome_icons_theme" ]]; then
+if [[ -f "$gnome_icons_theme" ]] && can_use_gsettings; then
     gsettings set org.gnome.desktop.interface icon-theme "$(<"$gnome_icons_theme")"
+elif [[ -f "$gnome_icons_theme" ]]; then
+    echo "[set-theme] skipping gsettings icon update: no session bus"
 fi
 
 # Toggle pi theme to match system theme
@@ -134,8 +239,8 @@ touch ~/.config/btop/themes/current.theme
 pkill -SIGUSR2 btop 2>/dev/null || true
 
 pkill swayosd-server 2>/dev/null || true
-swayosd-server &
-swaync-client -R >/dev/null 2>&1 || true
-swaync-client -rs >/dev/null 2>&1 || true
+setsid swayosd-server >/dev/null 2>&1 &
+timeout 2 swaync-client -R >/dev/null 2>&1 || true
+timeout 2 swaync-client -rs >/dev/null 2>&1 || true
 
 "$script_dir/set-browser-theme.sh"

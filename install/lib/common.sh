@@ -19,6 +19,10 @@ DOTS_DIR="$(dirname "$INSTALL_DIR")"
 PACKAGES_DIR="$INSTALL_DIR/packages"
 MODULES_DIR="$INSTALL_DIR/modules"
 
+# Module execution state
+MODULE_RESULTS=()
+CURRENT_MODULE=""
+
 # Logging
 log_info() { echo -e "  ${DIM}→${NC} $1"; }
 log_ok() { echo -e "  ${GREEN}✓${NC} $1"; }
@@ -46,6 +50,43 @@ show_complete() {
     echo -e "${GREEN}  Setup complete! Please reboot.${NC}"
     echo -e "${GREEN}════════════════════════════════════════${NC}"
     echo ""
+}
+
+record_module_result() {
+    local module="$1"
+    local status="$2"
+    MODULE_RESULTS+=("${module}:${status}")
+}
+
+show_module_summary() {
+    echo ""
+    echo -e "${BOLD}Module summary:${NC}"
+
+    if [[ ${#MODULE_RESULTS[@]} -eq 0 ]]; then
+        echo "  (no modules recorded)"
+        return
+    fi
+
+    local entry
+    for entry in "${MODULE_RESULTS[@]}"; do
+        local module="${entry%%:*}"
+        local status="${entry#*:}"
+        local num="${module%%-*}"
+        local name="${module#*-}"
+        name="${name%.sh}"
+
+        case "$status" in
+            ok)
+                echo -e "  ${GREEN}✓${NC} $num  $name"
+                ;;
+            failed)
+                echo -e "  ${RED}✗${NC} $num  $name"
+                ;;
+            *)
+                echo -e "  ${YELLOW}!${NC} $num  $name ($status)"
+                ;;
+        esac
+    done
 }
 
 # Checks
@@ -88,10 +129,14 @@ run_module() {
 
     if [[ ! -f "$script" ]]; then
         log_err "Module not found: $module"
+        record_module_result "$module" "failed"
         return 1
     fi
 
+    CURRENT_MODULE="$module"
     source "$script"
+    record_module_result "$module" "ok"
+    CURRENT_MODULE=""
 }
 
 # Check if command exists

@@ -81,7 +81,7 @@
     "interval": 1,
     "tooltip": false,
     "on-click": "~/.config/waybar/scripts/toggle-clock-mode.sh",
-    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
+    "on-click-right": "~/.config/waybar/scripts/open-timezone-picker.sh",
   },
   "idle_inhibitor": {
     "format": "{icon}",
@@ -132,7 +132,7 @@
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
-    "on-click": "omarchy-menu power",
+    "on-click": "~/.config/waybar/scripts/open-power-menu.sh",
     "states": {
       "warning": 20,
       "critical": 10,

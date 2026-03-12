@@ -37,6 +37,9 @@ noto-fonts-cjk
 wl-clipboard
 wtype
 brightnessctl
+swaybg
+playerctl
+pamixer
 
 # GTK & Theming
 gnome-keyring

@@ -11,7 +11,11 @@ TOTAL=${#BACKGROUNDS[@]}
 if [[ $TOTAL -eq 0 ]]; then
   notify-send "No background was found for theme" -t 2000
   pkill -x swaybg
-  setsid uwsm-app -- swaybg --color '#000000' >/dev/null 2>&1 &
+  if command -v uwsm-app >/dev/null 2>&1; then
+    setsid uwsm-app -- swaybg --color '#000000' >/dev/null 2>&1 &
+  else
+    setsid swaybg --color '#000000' >/dev/null 2>&1 &
+  fi
 else
   # Get current background from symlink
   if [[ -L "$CURRENT_BACKGROUND_LINK" ]]; then
