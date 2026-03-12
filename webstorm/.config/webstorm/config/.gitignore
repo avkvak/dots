@@ -8,6 +8,8 @@ splash-subscription-mode.txt
 event-log-metadata/
 tasks/
 workspace/
+extensions/com.intellij.database/
+codestyles/Default.xml
 options/AIAssistantQuotaManager2.xml
 options/AIAssistantPromptLibraryStorage.xml
 options/AIOnboardingPromoWindowAdvisor.xml
