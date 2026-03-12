@@ -5,7 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["niri/workspaces", "mpris"],
-  "modules-center": ["clock", "custom/world-clock", "idle_inhibitor"],
+  "modules-center": ["custom/clock", "idle_inhibitor"],
   "modules-right": [
     "custom/calendar",
     "group/tray-expander",
@@ -73,18 +73,14 @@
     "on-click": "alacritty --class 'org.float.btop' -e btop",
     "tooltip-format": "{used:0.1f}G/{total:0.1f}G",
   },
-  "clock": {
-    "format": "{:%A, %d %b %Y | %H:%M}",
-    "tooltip": false,
-    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
-  },
-  "custom/world-clock": {
+  "custom/clock": {
     "format": "{}",
     "return-type": "json",
-    "exec": "~/.config/waybar/scripts/world-clock.sh",
-    "interval": 30,
+    "exec": "~/.config/waybar/scripts/clock.sh",
+    "interval": 1,
     "tooltip": false,
-    "escape": false,
+    "on-click": "~/.config/waybar/scripts/toggle-clock-mode.sh",
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
   },
   "idle_inhibitor": {
     "format": "{icon}",
@@ -96,9 +92,9 @@
   "custom/calendar": {
     "format": "{}",
     "return-type": "json",
-    "exec": "~/.config/waybar/scripts/calendar.sh",
-    "interval": 300,
-    "on-click": "xdg-open $(~/.config/waybar/scripts/calendar.sh | jq -r .alt)",
+    "exec": "~/.config/waybar/scripts/evolution-calendar.py",
+    "interval": 60,
+    "on-click": "sh -c 'link=$(~/.config/waybar/scripts/evolution-calendar.py | jq -r .alt); [ -n \"$link\" ] && xdg-open \"$link\"'",
   },
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],

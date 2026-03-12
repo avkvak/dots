@@ -76,13 +76,12 @@ tooltip {
     font-size: 10px;
 }
 
-#clock {
+#custom-clock {
     margin-left: 8.75px;
 }
 
-#custom-world-clock {
-    margin-left: 8px;
-    font-size: 9px;
+#custom-calendar {
+    margin-right: 10px;
 }
 
 #idle_inhibitor {
