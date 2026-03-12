@@ -290,6 +290,6 @@ binds {
     Mod+Shift+C { spawn "google-chrome-stable"; }
     // Mod+Shift+A { spawn "google-chrome-stable" "--app=https://google.com/ai" "--profile-directory=Default"; }
     // Mod+Shift+G { spawn "google-chrome-stable" "--app=https://gemini.google.com" "--profile-directory=Default"; }
-    // Mod+Shift+X { spawn "google-chrome-stable" "--app=https://x.com" "--profile-directory=Default"; }
-    Mod+Shift+M { spawn "google-chrome-stable" "--app=https://meet.google.com" "--profile-directory=Profile 1"; }
+    Mod+Shift+Y { spawn "google-chrome-stable" "--app=https://youtube.com" "--profile-directory=Default"; }
+    Mod+Shift+M { spawn "google-chrome-stable" "--app=https://music.youtube.com" "--profile-directory=Default"; }
 }
