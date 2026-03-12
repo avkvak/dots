@@ -21,3 +21,7 @@ wallpaper service:
 `themes/run-wallpaper.sh`
 
 Runs `swaybg` against `~/.config/omarchy/current/background` and is managed by `omarchy-wallpaper.service`, so wallpaper updates stay stable even when themes are switched from `systemd --user` timers.
+
+Waybar notes:
+
+- `evolution-calendar.py` is the active calendar integration used by Waybar.

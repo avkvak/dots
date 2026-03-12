@@ -20,6 +20,7 @@ STOW_PACKAGES=(
     nvim
     swaync
     swayosd
+    systemd-user
     waybar
     webstorm
     zed
@@ -31,6 +32,7 @@ REQUIRED_COMMANDS=(
     stow
     git
     curl
+    python3
     fuzzel
     alacritty
     wl-paste
@@ -50,6 +52,7 @@ OPTIONAL_COMMANDS=(
     wlsunset
     playerctl
     pamixer
+    wl-copy
     btop
     impala
     wiremix
@@ -180,6 +183,9 @@ package_manifest_checks() {
     done
 
     local -a runtime_packages=(
+        "python"
+        "python-gobject"
+        "evolution-data-server"
         "swaybg"
         "playerctl"
         "pamixer"
@@ -195,6 +201,22 @@ package_manifest_checks() {
     done
 }
 
+script_runtime_checks() {
+    doctor_section "script-runtime"
+
+    if python3 - <<'PY' >/dev/null 2>&1
+import gi
+gi.require_version("EDataServer", "1.2")
+gi.require_version("ECal", "2.0")
+from gi.repository import ECal, EDataServer
+PY
+    then
+        doctor_pass "Python GI Evolution bindings available for evolution-calendar.py"
+    else
+        doctor_warn "Missing Python GI Evolution bindings for evolution-calendar.py"
+    fi
+}
+
 main() {
     cd "$DOTS_DIR"
     show_banner
@@ -204,6 +226,7 @@ main() {
     command_checks
     path_checks
     theme_checks
+    script_runtime_checks
 
     doctor_summary
 
