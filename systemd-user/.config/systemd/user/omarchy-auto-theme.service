@@ -1,0 +1,6 @@
+[Unit]
+Description=Apply scheduled omarchy theme
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/omarchy/themes/auto-theme.sh

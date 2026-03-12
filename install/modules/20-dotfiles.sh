@@ -37,6 +37,7 @@ STOW_PACKAGES=(
     nvim
     swaync
     swayosd
+    systemd-user
     waybar
     webstorm
     zed

@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodically sync omarchy theme with time of day
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=15m
+Persistent=true
+Unit=omarchy-auto-theme.service
+
+[Install]
+WantedBy=timers.target
