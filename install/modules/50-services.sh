@@ -27,6 +27,8 @@ done
 
 if systemctl --user list-unit-files >/dev/null 2>&1; then
     systemctl --user daemon-reload
+    systemctl --user enable --now omarchy-swayosd.service
+    log_ok "omarchy-swayosd.service enabled"
     systemctl --user enable --now omarchy-wallpaper.service
     log_ok "omarchy-wallpaper.service enabled"
     systemctl --user enable --now omarchy-auto-theme.timer

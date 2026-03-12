@@ -295,8 +295,7 @@ touch ~/.config/btop/themes/current.theme
 # Restart btop if running
 pkill -SIGUSR2 btop 2>/dev/null || true
 
-pkill swayosd-server 2>/dev/null || true
-setsid swayosd-server >/dev/null 2>&1 &
+systemctl --user restart omarchy-swayosd.service >/dev/null 2>&1 || true
 timeout 2 swaync-client -R >/dev/null 2>&1 || true
 timeout 2 swaync-client -rs >/dev/null 2>&1 || true
 

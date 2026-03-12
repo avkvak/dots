@@ -2,7 +2,7 @@
 
 spawn-at-startup "waybar"
 spawn-at-startup "swaync"
-spawn-at-startup "swayosd-server"
+spawn-sh-at-startup "systemctl --user start omarchy-swayosd.service"
 spawn-sh-at-startup "systemctl --user start omarchy-wallpaper.service"
 spawn-sh-at-startup "exec \"$HOME/.config/niri/idle.sh\""
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"

@@ -18,12 +18,12 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+T hotkey-overlay-title="Themes menu" { spawn-sh "$HOME/dev/system/dots/themes/theme-picker.sh"; }
+    Mod+T hotkey-overlay-title="Themes menu" { spawn-sh "$HOME/.local/share/omarchy/themes/theme-picker.sh"; }
     Mod+Scroll_Lock hotkey-overlay-title="Toggle Handy transcription" { spawn "handy" "--toggle-transcription"; }
     Mod+Pause hotkey-overlay-title="Toggle Handy transcription (with post-process)" { spawn "handy" "--toggle-post-process"; }
-    Mod+Alt+V hotkey-overlay-title="Clipboard History" { spawn-sh "$HOME/dev/system/dots/themes/clipboard-picker.sh"; }
-    Mod+B hotkey-overlay-title="Browser menu" { spawn-sh "$HOME/dev/system/dots/themes/set-next-bg.sh"; }
-    Mod+Shift+W hotkey-overlay-title="Pick wallpaper" { spawn-sh "$HOME/dev/system/dots/themes/wallpaper-picker.sh"; }
+    Mod+Alt+V hotkey-overlay-title="Clipboard History" { spawn-sh "$HOME/.local/share/omarchy/themes/clipboard-picker.sh"; }
+    Mod+B hotkey-overlay-title="Browser menu" { spawn-sh "$HOME/.local/share/omarchy/themes/set-next-bg.sh"; }
+    Mod+Shift+W hotkey-overlay-title="Pick wallpaper" { spawn-sh "$HOME/.local/share/omarchy/themes/wallpaper-picker.sh"; }
     Mod+N hotkey-overlay-title="Toggle night light" { spawn-sh "pkill wlsunset && notify-send 'Night Light' 'Disabled' || { exec wlsunset -l 41.6 -L 41.6 -d 1800 -t 5000 & notify-send 'Night Light' 'Enabled'; }"; }
     Mod+Shift+N hotkey-overlay-title="Toggle notification center" { spawn "swaync-client" "-t"; }
 
@@ -54,8 +54,8 @@ binds {
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "$HOME/dev/system/dots/themes/brightness-control.sh up"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "$HOME/dev/system/dots/themes/brightness-control.sh down"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "$HOME/.local/share/omarchy/themes/brightness-control.sh up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "$HOME/.local/share/omarchy/themes/brightness-control.sh down"; }
     Mod+Print hotkey-overlay-title="Annotate area screenshot to clipboard" { spawn-sh "grim -g \"$(slurp)\" - | satty --filename - --copy-command wl-copy --actions-on-enter save-to-clipboard,exit --actions-on-right-click save-to-clipboard,exit"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.

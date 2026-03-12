@@ -103,6 +103,11 @@ repo_integrity_checks() {
     doctor_check_file "$DOTS_DIR/themes/clipboard-picker.sh" fail "themes/clipboard-picker.sh"
     doctor_check_file "$DOTS_DIR/themes/wallpaper-picker.sh" fail "themes/wallpaper-picker.sh"
     doctor_check_file "$DOTS_DIR/themes/brightness-control.sh" fail "themes/brightness-control.sh"
+    doctor_check_file "$DOTS_DIR/themes/run-wallpaper.sh" fail "themes/run-wallpaper.sh"
+    doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-wallpaper.service" fail "systemd-user/.config/systemd/user/omarchy-wallpaper.service"
+    doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-swayosd.service" fail "systemd-user/.config/systemd/user/omarchy-swayosd.service"
+    doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.service" fail "systemd-user/.config/systemd/user/omarchy-auto-theme.service"
+    doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.timer" fail "systemd-user/.config/systemd/user/omarchy-auto-theme.timer"
 }
 
 command_checks() {
@@ -122,6 +127,11 @@ path_checks() {
     doctor_section "paths"
 
     doctor_check_file "$HOME/.config/niri/lock.sh" warn "~/.config/niri/lock.sh"
+    doctor_check_file "$HOME/.local/share/omarchy/themes/theme-picker.sh" warn "~/.local/share/omarchy/themes/theme-picker.sh"
+    doctor_check_file "$HOME/.local/share/omarchy/themes/clipboard-picker.sh" warn "~/.local/share/omarchy/themes/clipboard-picker.sh"
+    doctor_check_file "$HOME/.local/share/omarchy/themes/set-next-bg.sh" warn "~/.local/share/omarchy/themes/set-next-bg.sh"
+    doctor_check_file "$HOME/.local/share/omarchy/themes/wallpaper-picker.sh" warn "~/.local/share/omarchy/themes/wallpaper-picker.sh"
+    doctor_check_file "$HOME/.local/share/omarchy/themes/brightness-control.sh" warn "~/.local/share/omarchy/themes/brightness-control.sh"
     doctor_check_dir "$HOME/.config/omarchy/current" warn "~/.config/omarchy/current"
     doctor_check_file "$HOME/.config/omarchy/current/theme.name" warn "~/.config/omarchy/current/theme.name"
     doctor_check_dir "$HOME/.config/omarchy/current/theme" warn "~/.config/omarchy/current/theme"
