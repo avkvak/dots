@@ -175,8 +175,8 @@ def build_payload() -> dict:
 
     if not events:
         return {
-            "text": "",
-            "tooltip": "No more timed events today",
+            "text": "No upcoming events",
+            "tooltip": "No upcoming events",
             "alt": "",
         }
 
