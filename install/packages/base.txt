@@ -43,6 +43,7 @@ gnome-keyring
 gnome-themes-extra
 gtk4-layer-shell
 libnotify
+papirus-icon-theme
 
 # Graphics
 mesa
