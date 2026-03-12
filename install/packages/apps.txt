@@ -17,8 +17,8 @@ slurp
 
 # Communication
 telegram-desktop
-thunderbird
-geary
+evolution
+evolution-ews
 
 # Productivity
 obsidian

@@ -35,6 +35,7 @@ fi
 echo ""
 echo -e "  ${BOLD}Installed:${NC}"
 echo "    - Packages (base + apps + AUR)"
+echo "    - Mail/calendar clients (Thunderbird + Evolution)"
 echo "    - Dotfiles (stow)"
 echo "    - Git + SSH key"
 echo "    - nvm, bun, Claude Code, Zed"
