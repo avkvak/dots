@@ -5,7 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["niri/workspaces", "mpris"],
-  "modules-center": ["clock", "idle_inhibitor"],
+  "modules-center": ["clock", "custom/world-clock", "idle_inhibitor"],
   "modules-right": [
     "custom/calendar",
     "group/tray-expander",
@@ -75,9 +75,16 @@
   },
   "clock": {
     "format": "{:%A, %d %b %Y | %H:%M}",
-    "format-alt": "{:L%d %B W%V %Y}",
     "tooltip": false,
     "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
+  },
+  "custom/world-clock": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/world-clock.sh",
+    "interval": 30,
+    "tooltip": false,
+    "escape": false,
   },
   "idle_inhibitor": {
     "format": "{icon}",
