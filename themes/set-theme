@@ -135,6 +135,7 @@ pkill -SIGUSR2 btop 2>/dev/null || true
 
 pkill swayosd-server 2>/dev/null || true
 swayosd-server &
-makoctl reload
+swaync-client -R >/dev/null 2>&1 || true
+swaync-client -rs >/dev/null 2>&1 || true
 
 "$script_dir/set-browser-theme.sh"

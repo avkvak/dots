@@ -25,6 +25,7 @@ binds {
     Mod+B hotkey-overlay-title="Browser menu" { spawn-sh "$HOME/dev/system/dots/themes/set-next-bg.sh"; }
     Mod+Shift+W hotkey-overlay-title="Pick wallpaper" { spawn-sh "$HOME/dev/system/dots/themes/wallpaper-picker.sh"; }
     Mod+N hotkey-overlay-title="Toggle night light" { spawn-sh "pkill wlsunset && notify-send 'Night Light' 'Disabled' || { exec wlsunset -l 41.6 -L 41.6 -d 1800 -t 5000 & notify-send 'Night Light' 'Enabled'; }"; }
+    Mod+Shift+N hotkey-overlay-title="Toggle notification center" { spawn "swaync-client" "-t"; }
 
     // Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn-sh "sh \"$HOME/.config/niri/lock.sh\""; }

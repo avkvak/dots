@@ -33,10 +33,10 @@ STOW_PACKAGES=(
     fontconfig
     fuzzel
     hypr
-    mako
     mango
     niri
     nvim
+    swaync
     swayosd
     waybar
     webstorm

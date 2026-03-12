@@ -7,7 +7,7 @@ ly
 
 # Panel & Notifications
 waybar
-mako
+swaync
 swayosd
 
 # Application Launcher

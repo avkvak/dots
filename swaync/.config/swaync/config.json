@@ -1,0 +1,39 @@
+{
+    "$schema": "/etc/xdg/swaync/configSchema.json",
+    "positionX": "right",
+    "positionY": "top",
+    "layer": "overlay",
+    "control-center-layer": "top",
+    "control-center-positionX": "right",
+    "control-center-positionY": "top",
+    "control-center-margin-top": 20,
+    "control-center-margin-right": 20,
+    "control-center-margin-bottom": 20,
+    "control-center-margin-left": 0,
+    "notification-window-width": 420,
+    "control-center-width": 420,
+    "control-center-height": 720,
+    "fit-to-screen": true,
+    "timeout": 10,
+    "timeout-low": 6,
+    "timeout-critical": 0,
+    "keyboard-shortcuts": true,
+    "image-visibility": "when-available",
+    "hide-on-clear": false,
+    "hide-on-action": true,
+    "widgets": [
+        "title",
+        "dnd",
+        "notifications"
+    ],
+    "widget-config": {
+        "title": {
+            "text": "Notifications",
+            "clear-all-button": true,
+            "button-text": "Clear"
+        },
+        "dnd": {
+            "text": "Focus"
+        }
+    }
+}

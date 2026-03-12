@@ -16,6 +16,7 @@
     "cpu",
     "memory",
     "battery",
+    "custom/notifications",
   ],
   "mpris": {
     "format": "|  {status_icon}  {title} - {artist}",
@@ -95,6 +96,15 @@
     "exec": "~/.config/waybar/scripts/evolution-calendar.py",
     "interval": 60,
     "on-click": "sh -c 'link=$(~/.config/waybar/scripts/evolution-calendar.py | jq -r .alt); [ -n \"$link\" ] && xdg-open \"$link\"'",
+  },
+  "custom/notifications": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/swaync-status.sh",
+    "restart-interval": 2,
+    "tooltip": true,
+    "on-click": "swaync-client -t",
+    "on-click-right": "swaync-client -d",
   },
   "network": {
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],

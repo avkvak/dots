@@ -1,6 +1,7 @@
 // Startup applications
 
 spawn-at-startup "waybar"
+spawn-at-startup "swaync"
 spawn-at-startup "swayosd-server"
 spawn-sh-at-startup "exec swaybg -i \"$HOME/.config/omarchy/current/background\" -m fill"
 spawn-sh-at-startup "exec \"$HOME/.config/niri/idle.sh\""

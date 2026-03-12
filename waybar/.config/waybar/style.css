@@ -84,6 +84,24 @@ tooltip {
     margin-right: 10px;
 }
 
+#custom-notifications {
+    margin-left: 14px;
+    min-width: 16px;
+}
+
+#custom-notifications.unread {
+    color: @foreground;
+}
+
+#custom-notifications.dnd {
+    color: @foreground;
+    opacity: 0.75;
+}
+
+#custom-notifications.open {
+    color: @foreground;
+}
+
 #idle_inhibitor {
     min-width: 20px;
     margin-left: 8.75px;
