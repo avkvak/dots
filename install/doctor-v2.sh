@@ -53,6 +53,8 @@ CORE_COMMANDS=(
     slurp
     satty
     brightnessctl
+    rclone
+    fusermount3
 )
 
 OPTIONAL_COMMANDS=(
@@ -129,6 +131,7 @@ repo() {
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.timer" fail
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-wallpaper.service" fail
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-swayosd.service" fail
+    doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/rclone-gdrive.service" fail
 }
 
 commands() {
@@ -185,6 +188,30 @@ symlinks() {
 
     doctor_v2_check_symlink "$HOME/.local/share/omarchy/themes" warn "~/.local/share/omarchy/themes"
     doctor_v2_check_symlink "$HOME/.config/omarchy/current/background" warn "~/.config/omarchy/current/background"
+    doctor_v2_check_file "$HOME/.config/systemd/user/rclone-gdrive.service" warn "~/.config/systemd/user/rclone-gdrive.service"
+    doctor_v2_check_dir "$HOME/mnt/gdrive" warn "~/mnt/gdrive"
+}
+
+google_drive() {
+    doctor_v2_section "google-drive"
+
+    if has_cmd rclone; then
+        if rclone listremotes 2>/dev/null | grep -qx 'gdrive:'; then
+            doctor_v2_pass "rclone remote configured: gdrive"
+        else
+            doctor_v2_issue warn "rclone remote is not configured: gdrive"
+        fi
+    else
+        doctor_v2_issue warn "Skipping rclone remote check because rclone is unavailable"
+    fi
+
+    if has_cmd mountpoint; then
+        if mountpoint -q "$HOME/mnt/gdrive" >/dev/null 2>&1; then
+            doctor_v2_pass "Mount is active: ~/mnt/gdrive"
+        else
+            doctor_v2_issue warn "Mount is not active: ~/mnt/gdrive"
+        fi
+    fi
 }
 
 theme() {
@@ -242,7 +269,8 @@ services() {
     for unit in \
         omarchy-auto-theme.timer \
         omarchy-wallpaper.service \
-        omarchy-swayosd.service; do
+        omarchy-swayosd.service \
+        rclone-gdrive.service; do
         if doctor_v2_check_systemctl_user is-enabled "$unit"; then
             doctor_v2_pass "User unit enabled: $unit"
         else
@@ -364,7 +392,7 @@ Options:
   -h, --help         Show this help
 
 Sections:
-  repo commands scripts symlinks theme services session desktop optional
+  repo commands scripts symlinks theme google-drive services session desktop optional
 EOF
 }
 
@@ -402,6 +430,7 @@ main() {
     run_section scripts
     run_section symlinks
     run_section theme
+    run_section google_drive
     run_section services
     run_section session
     run_section desktop

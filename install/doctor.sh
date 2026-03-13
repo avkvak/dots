@@ -45,6 +45,8 @@ REQUIRED_COMMANDS=(
     slurp
     satty
     notify-send
+    rclone
+    fusermount3
 )
 
 OPTIONAL_COMMANDS=(
@@ -108,6 +110,7 @@ repo_integrity_checks() {
     doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-swayosd.service" fail "systemd-user/.config/systemd/user/omarchy-swayosd.service"
     doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.service" fail "systemd-user/.config/systemd/user/omarchy-auto-theme.service"
     doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.timer" fail "systemd-user/.config/systemd/user/omarchy-auto-theme.timer"
+    doctor_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/rclone-gdrive.service" fail "systemd-user/.config/systemd/user/rclone-gdrive.service"
 }
 
 command_checks() {
@@ -136,11 +139,37 @@ path_checks() {
     doctor_check_file "$HOME/.config/omarchy/current/theme.name" warn "~/.config/omarchy/current/theme.name"
     doctor_check_dir "$HOME/.config/omarchy/current/theme" warn "~/.config/omarchy/current/theme"
     doctor_check_link_target "$HOME/.config/omarchy/current/background" warn "~/.config/omarchy/current/background"
+    doctor_check_file "$HOME/.config/systemd/user/rclone-gdrive.service" warn "~/.config/systemd/user/rclone-gdrive.service"
+    doctor_check_dir "$HOME/mnt/gdrive" warn "~/mnt/gdrive"
 
     local path
     for path in "${EXTERNAL_OPTIONAL_FILES[@]}"; do
         doctor_check_file "$path" warn "$path"
     done
+}
+
+google_drive_checks() {
+    doctor_section "google-drive"
+
+    if has_cmd rclone; then
+        if rclone listremotes 2>/dev/null | grep -qx 'gdrive:'; then
+            doctor_pass "rclone remote configured: gdrive"
+        else
+            doctor_warn "rclone remote is not configured: gdrive"
+        fi
+    else
+        doctor_warn "Skipping rclone remote check because rclone is unavailable"
+    fi
+
+    if systemctl --user list-unit-files >/dev/null 2>&1; then
+        if systemctl --user is-enabled rclone-gdrive.service >/dev/null 2>&1; then
+            doctor_pass "User unit enabled: rclone-gdrive.service"
+        else
+            doctor_warn "User unit not enabled: rclone-gdrive.service"
+        fi
+    else
+        doctor_warn "systemctl --user is unavailable; could not verify rclone-gdrive.service"
+    fi
 }
 
 theme_checks() {
@@ -199,6 +228,8 @@ package_manifest_checks() {
         "swaybg"
         "playerctl"
         "pamixer"
+        "rclone"
+        "fuse3"
     )
     local package_name
 
@@ -235,6 +266,7 @@ main() {
     package_manifest_checks
     command_checks
     path_checks
+    google_drive_checks
     theme_checks
     script_runtime_checks
 

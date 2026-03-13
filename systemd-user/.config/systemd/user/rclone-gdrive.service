@@ -1,0 +1,16 @@
+[Unit]
+Description=Mount Google Drive with rclone
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/mkdir -p %h/mnt/gdrive
+ExecStartPre=-/usr/bin/fusermount3 -uz %h/mnt/gdrive
+ExecStart=/usr/bin/rclone mount gdrive: %h/mnt/gdrive --vfs-cache-mode full --cache-dir %h/.cache/rclone
+ExecStop=/usr/bin/fusermount3 -u %h/mnt/gdrive
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -6,3 +6,4 @@ webstorm
 zoom
 # AUR packages
 gcalcli
+joplin-desktop

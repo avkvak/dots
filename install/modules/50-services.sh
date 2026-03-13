@@ -33,6 +33,12 @@ if systemctl --user list-unit-files >/dev/null 2>&1; then
     log_ok "omarchy-wallpaper.service enabled"
     systemctl --user enable --now omarchy-auto-theme.timer
     log_ok "omarchy-auto-theme.timer enabled"
+    if has_cmd rclone; then
+        systemctl --user enable rclone-gdrive.service
+        log_ok "rclone-gdrive.service enabled"
+    else
+        log_warn "rclone not found; rclone-gdrive.service was not enabled"
+    fi
 else
     log_warn "systemctl --user is unavailable; user theme services were not enabled"
 fi

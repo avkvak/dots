@@ -34,6 +34,8 @@ gum
 libqalculate
 lsof
 sushi
+rclone
+fuse3
 
 # Hardware
 ddcutil
