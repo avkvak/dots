@@ -4,3 +4,15 @@ layer-rule {
 
     block-out-from "screen-capture"
 }
+
+layer-rule {
+    match namespace="^swaync-notification-window$"
+
+    block-out-from "screen-capture"
+}
+
+layer-rule {
+    match namespace="^swaync-control-center$"
+
+    block-out-from "screen-capture"
+}
