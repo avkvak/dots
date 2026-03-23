@@ -4,6 +4,32 @@
 
 log_header "20" "Deploying dotfiles..."
 
+deploy_claude_home() {
+    local claude_source_dir="$DOTS_DIR/claude/.claude"
+    local claude_home_dir="$HOME/.claude"
+    local temp_dir=""
+
+    if [[ ! -d "$claude_source_dir" ]]; then
+        log_warn "Claude config source not found: $claude_source_dir"
+        return 0
+    fi
+
+    if [[ -L "$claude_home_dir" ]]; then
+        temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/claude-home.XXXXXX")"
+        cp -a "$claude_home_dir/." "$temp_dir/"
+        rm "$claude_home_dir"
+        mkdir -p "$claude_home_dir"
+        cp -a "$temp_dir/." "$claude_home_dir/"
+        rm -rf "$temp_dir"
+        log_ok "Replaced Claude symlink with a real ~/.claude directory"
+    else
+        mkdir -p "$claude_home_dir"
+    fi
+
+    cp -an "$claude_source_dir/." "$claude_home_dir/"
+    log_ok "Claude config copied into ~/.claude"
+}
+
 # Install Oh My Zsh
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     log_info "Installing Oh My Zsh..."
@@ -28,7 +54,6 @@ fi
 STOW_PACKAGES=(
     alacritty
     btop
-    claude
     electron-and-browsers-flags
     fontconfig
     fuzzel
@@ -63,6 +88,8 @@ for pkg in "${STOW_PACKAGES[@]}"; do
         log_warn "Package not found: $pkg"
     fi
 done
+
+deploy_claude_home
 
 # Setup theme system
 log_info "Setting up theme system..."

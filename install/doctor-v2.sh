@@ -13,7 +13,6 @@ SECTION_FILTER=""
 STOW_PACKAGES=(
     alacritty
     btop
-    claude
     electron-and-browsers-flags
     fontconfig
     fuzzel
@@ -40,6 +39,7 @@ CORE_COMMANDS=(
     jq
     notify-send
     niri
+    xwayland-satellite
     waybar
     swaybg
     swayidle
@@ -127,6 +127,7 @@ repo() {
         fi
     done
 
+    doctor_v2_check_dir "$DOTS_DIR/claude/.claude" fail "claude/.claude"
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.service" fail
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-auto-theme.timer" fail
     doctor_v2_check_file "$DOTS_DIR/systemd-user/.config/systemd/user/omarchy-wallpaper.service" fail
@@ -190,6 +191,14 @@ symlinks() {
     doctor_v2_check_symlink "$HOME/.config/omarchy/current/background" warn "~/.config/omarchy/current/background"
     doctor_v2_check_file "$HOME/.config/systemd/user/rclone-gdrive.service" warn "~/.config/systemd/user/rclone-gdrive.service"
     doctor_v2_check_dir "$HOME/mnt/gdrive" warn "~/mnt/gdrive"
+
+    if [[ -d "$HOME/.claude" ]] && [[ ! -L "$HOME/.claude" ]]; then
+        doctor_v2_pass "Claude config is a real directory: ~/.claude"
+    elif [[ -L "$HOME/.claude" ]]; then
+        doctor_v2_issue warn "Claude config is still symlinked: ~/.claude"
+    else
+        doctor_v2_issue warn "Claude config missing: ~/.claude"
+    fi
 }
 
 google_drive() {
@@ -295,6 +304,7 @@ session() {
     doctor_v2_section "session"
 
     [[ -n "${WAYLAND_DISPLAY:-}" ]] && doctor_v2_pass "WAYLAND_DISPLAY=$WAYLAND_DISPLAY" || doctor_v2_issue warn "WAYLAND_DISPLAY is not set"
+    [[ -n "${DISPLAY:-}" ]] && doctor_v2_pass "DISPLAY=$DISPLAY" || doctor_v2_issue warn "DISPLAY is not set; X11 apps like Zoom will not start"
     [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]] && doctor_v2_pass "DBUS session bus is set" || doctor_v2_issue warn "DBUS_SESSION_BUS_ADDRESS is not set"
     [[ -n "${XDG_CURRENT_DESKTOP:-}" ]] && doctor_v2_pass "XDG_CURRENT_DESKTOP=$XDG_CURRENT_DESKTOP" || doctor_v2_issue warn "XDG_CURRENT_DESKTOP is not set"
 

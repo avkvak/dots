@@ -152,3 +152,6 @@ export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+
+# Load private tokens for Codex MCP integrations when present.
+[ -f "$HOME/.config/codex/github-mcp.env.zsh" ] && source "$HOME/.config/codex/github-mcp.env.zsh"

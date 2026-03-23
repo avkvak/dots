@@ -11,7 +11,6 @@ source "$SCRIPT_DIR/lib/doctor.sh"
 STOW_PACKAGES=(
     alacritty
     btop
-    claude
     electron-and-browsers-flags
     fontconfig
     fuzzel
@@ -97,6 +96,7 @@ repo_integrity_checks() {
         doctor_check_file "$MODULES_DIR/$module" fail "install/modules/$module"
     done
 
+    doctor_check_dir "$DOTS_DIR/claude/.claude" fail "claude/.claude"
     doctor_check_dir "$DOTS_DIR/themes" fail "themes/"
     doctor_check_dir "$DOTS_DIR/themes/themed" fail "themes/themed/"
     doctor_check_file "$DOTS_DIR/themes/set-theme" fail "themes/set-theme"
@@ -141,6 +141,14 @@ path_checks() {
     doctor_check_link_target "$HOME/.config/omarchy/current/background" warn "~/.config/omarchy/current/background"
     doctor_check_file "$HOME/.config/systemd/user/rclone-gdrive.service" warn "~/.config/systemd/user/rclone-gdrive.service"
     doctor_check_dir "$HOME/mnt/gdrive" warn "~/mnt/gdrive"
+
+    if [[ -d "$HOME/.claude" ]] && [[ ! -L "$HOME/.claude" ]]; then
+        doctor_pass "Claude config is a real directory: ~/.claude"
+    elif [[ -L "$HOME/.claude" ]]; then
+        doctor_warn "Claude config is still symlinked: ~/.claude"
+    else
+        doctor_warn "Missing directory: ~/.claude"
+    fi
 
     local path
     for path in "${EXTERNAL_OPTIONAL_FILES[@]}"; do

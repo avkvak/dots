@@ -2,6 +2,7 @@
 
 # Window Manager & Wayland
 niri
+xwayland-satellite
 xdg-desktop-portal-gtk
 ly
 
